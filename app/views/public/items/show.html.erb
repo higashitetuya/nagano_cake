@@ -1,0 +1,25 @@
+<div class="container">
+  <div style="height: 100px; width: auto;">
+  </div>
+  <p class="notice text-center"><font color="red"><%= notice %></font></p>
+    <div class="row mt-4">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-5">
+        <div class="text-right pr-3"><%= attachment_image_tag @item, :image, :fill, 250, 200, format: 'jpeg' %></div>
+      </div>
+      <div class="col-md-5">
+        <div class="h3"><%= @item.name %></div>
+        <div class="mt-3"><%= @item.introduction %></div>
+        <div class="mt-5"><span class="h4">¥<%= (@item.price * 1.1).floor %></span>(税込)</div>
+             <%= form_with model: @cart_item, url: cart_item_create_path, local:true do |f| %>
+        <div class="mt-4"><%= f.select :amount, options_for_select((1..20).to_a), include_blank: "個数選択" %>
+             <%= f.hidden_field :item_id, :value => @item.id %>
+             <span class="ml-3"><%= f.submit 'カートに入れる', class: 'btn btn-success btn-sm ml-2' %></span>
+        </div>
+      </div>
+        <div class="col-md-1">
+      </div>
+    </div>
+  <% end %>
+</div>

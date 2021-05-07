@@ -1,0 +1,9 @@
+<div class="container text-center">
+  <div style="height: 160px; width: auto;">
+  </div>
+  <div class="pb-3 h3">本当に退会しますか？</div>
+<P class="pb-3">退会すると、会員登録情報や<br>
+  これまでの購⼊履歴が閲覧できなくなります。<br>
+  退会する場合は、「退会する」をクリックしてください。</P>
+  <span class="pr-4"><%= link_to "退会しない", items_path, class: 'btn btn-primary' %></span><%= link_to "退会する", withdraw_path, method: :patch, class: 'btn btn-danger' %>
+</div>

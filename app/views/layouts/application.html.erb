@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NaganoCake</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <header class="shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+          <a class="navbar-brand p-2 border" href="/"><%= image_tag 'ケーキ.jpg', :size =>'70x50' %></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+              <div class="collapse navbar-collapse" id="navbarnavDropdown">
+                <ul class="navbar-nav ml-auto">
+
+                  <% if customer_signed_in? %>
+                    <p class="m-2 pr-5"><font color="green">ようこそ<%= current_customer.last_name %>さん!</font></p>
+                    <li class="nav-item pr-2">
+                      <%= link_to 'マイページ', my_page_path, class: "btn btn-outline-primary" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "商品一覧", items_path, class: "btn btn-outline-danger" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "カート", cart_items_path, class: "btn btn-outline-success" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "ログアウト", destroy_customer_session_path, method: :delete, class: "btn btn-outline-info" %>
+                    </li>
+                    <%= form_tag(items_path, :method => "get") do %>
+                    <div class="input-group">
+                    <%= text_field_tag :search, params[:search],:placeholder => "キーワードで検索　　　 \uf002", class: 'fa' %>
+                    <% end %>
+                    </div>
+
+                  <% elsif admin_signed_in? %>
+                    <li class="nav-item pr-2">
+                      <%= link_to "商品一覧", admin_items_path, class: "btn btn-outline-danger" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "会員一覧", admin_customers_path, class: "btn btn-outline-primary" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "注⽂履歴⼀覧", admin_path,class: "btn btn-outline-success" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "ジャンル一覧", admin_genres_path, class: "btn btn-outline-warning" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-outline-info" %>
+                    </li>
+                      <%= form_tag(admin_items_path, :method => "get") do %>
+                      <%= text_field_tag :search, params[:search],:placeholder => "キーワードで検索" %>
+                      <%= button_tag type: 'submit', class: 'btn btn-outline-primary' do %><i class="fas fa-search"></i>
+                      <% end %>
+                      <% end %>
+                  <% else %>
+
+                    <li class="nav-item pr-2">
+                      <%= link_to "About", about_path, class: "btn btn-outline-secondary" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "商品一覧", items_path, class: "btn btn-outline-danger" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "新規登録", new_customer_registration_path, class: "btn btn-outline-success" %>
+                    </li>
+                    <li class="nav-item pr-2">
+                      <%= link_to "ログイン", new_customer_session_path, class: "btn btn-outline-primary" %>
+                    </li>
+                    <%= form_tag(items_path, :method => "get") do %>
+                    <div class="input-group">
+                    <%= text_field_tag :search, params[:search],:placeholder => "キーワードで検索" %>
+                    <span class="input-group-btn"><%= button_tag type: 'submit', class: 'btn btn-link' do %><i class="fas fa-search">
+                    <% end %></i></span></div>
+                    <% end %>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+    <%= yield %>
+  </body>
+</html>

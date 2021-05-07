@@ -1,0 +1,76 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-11">
+      <span class="px-3 h4 bg-light text-dark">注⽂情報確認</span>
+    </div>
+  </div>
+<div class="row py-2">
+  <div class="col-lg-9">
+    <table class="table table-bordered">
+      <tr class="bg-light">
+        <th>商品名</th>
+        <th>単価(税込)</th>
+        <th>数量</th>
+        <th>小計</th>
+      </tr>
+      <% @cart_items.each do |cart_item| %>
+       <tr>
+        <td><%= attachment_image_tag cart_item.item, :image, :fill, 50, 50, format: 'jpeg' %><span class="ml-3"><%= cart_item.item.name %></span></td>
+        <td class="align-middle"><%= (cart_item.item.price * 1.10).floor %>円</td>
+        <td class="align-middle"><%= cart_item.amount %></td>
+        <td class="align-middle"><%= (cart_item.item.price * 1.10).floor * cart_item.amount %>円
+            <% @sum +=  (cart_item.item.price * 1.10).floor * cart_item.amount %></td>
+      </tr>
+    <% end %>
+    </table>
+  </div>
+  <div class="col-lg-3 d-flex align-items-end">
+    <table class="table table-bordered">
+      <tr>
+        <th class="bg-light">送料</th><td><%= @shipping_cost %>円</td>
+      </tr>
+      <tr>
+        <th class="bg-light">商品合計</th><td><%= @sum %>円</td>
+      </tr>
+      <tr>
+        <th class="bg-light">請求金額</th><td><%= @shipping_cost + @sum %>円</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<table>
+  <tbody>
+    <tr>
+      <th class="h5">支払方法</th><td><span class="ml-3"><%= @order.payment_method %></span></td>
+    </tr>
+  </tbody>
+</table>
+<div class="py-2"></div>
+<table>
+  <tbody>
+    <tr>
+      <th class="h5">お届け先</th><td><span class="ml-3">〒<%= @order.postal_code %></span><span class="ml-2"><%= @order.address %></span></td>
+    </tr>
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-lg-1">
+  </div>
+  <div class="col-lg-11">
+    <span class="ml-4"><%= @order.name %></span>
+  </div>
+</div>
+<%= form_with model: @order, url: orders_create_path(@order.id), local:true do |f| %>
+  <%= f.hidden_field :shipping_cost, :value => 800 %>
+  <%= f.hidden_field :total_payment, :value => @shipping_cost + @sum %>
+  <%= f.hidden_field :payment_method, :value =>  @order.payment_method %>
+  <%= f.hidden_field :postal_code, :value =>  @order.postal_code %>
+  <%= f.hidden_field :address, :value => @order.address %>
+  <%= f.hidden_field :name, :value => @order.name %>
+<div class="text-center mt-4">
+  <%= f.submit "注文を確定する", "data-confirm" => "注文を確定します。よろしいですか？", class: 'btn btn-success' %>
+</div>
+<% end %>
+</div>

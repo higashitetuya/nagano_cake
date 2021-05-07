@@ -1,0 +1,36 @@
+ja:
+  activerecord:
+    # 追加
+    attributes:
+      address:
+        postal_code: 電話番号
+        address: 住所
+        name: 宛名
+
+      customer:
+        last_name: 名字
+        first_name: 名前
+        last_name_kana: 名字(カナ)
+        first_name_kana: 名前(カナ)
+        address: 住所
+        postal_code: 郵便番号
+        email: メールアドレス
+        telephone_number: 電話番号
+
+      item:
+        image: 画像
+        name: 商品名
+        introduction: 商品説明
+        price: 税抜価格
+        genre: ジャンル
+
+      admin:
+        email: メールアドレス
+
+      genre:
+        name: ジャンル名
+
+      order:
+        postal_code: 郵便番号
+        address: 住所
+        name: 宛名

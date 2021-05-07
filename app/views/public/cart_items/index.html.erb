@@ -1,0 +1,59 @@
+<div class="text-center mt-5">
+  <font color="red"><%= flash[:notice] %></font>
+</div>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <span class="px-3 h4 bg-light text-dark">ショッピングカート</span>
+    </div>
+      <div class="col-lg-6">
+        <div class="text-right"><%= link_to "カートを空にする", cart_item_destroy_all_path, method: :delete, "data-confirm" => "カートを空にしますか？", class: 'btn btn-danger pull-right btn-sm' %></div>
+      </div>
+  </div>
+  <div class="mt-2">
+    <table class="table table-bordered">
+      <tr class="table-success">
+        <th>商品名</th>
+        <th>単価（税込）</th>
+        <th>数量</th>
+        <th>小計</th>
+        <th></th>
+      </tr>
+        <% @cart_items.each do |cart_item| %>
+      <tbody>
+        <tr>
+          <td><%= attachment_image_tag cart_item.item, :image, :fill, 70, 70, format: 'jpeg' %><span class="px-3"><%= cart_item.item.name %></span></td>
+          <td class="align-middle"><%= (cart_item.item.price * 1.10).floor %></td>
+          <%= form_with model: cart_item, url: cart_item_update_path(cart_item.id), local:true do |f| %>
+          <td class="align-middle" width="150"><%= f.select :amount, options_for_select((1..20).to_a, cart_item.amount)%><%= f.submit '変更', class: 'btn btn-success ml-2' %></td>
+          <% end %>
+          <td class="align-middle"><%= (cart_item.item.price * 1.10).floor * cart_item.amount %></td>
+              <% @sum +=  (cart_item.item.price * 1.10).floor * cart_item.amount %>
+          <td class="align-middle" width="120"><%= link_to "削除する", cart_item_destroy_path(cart_item.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: 'btn btn-danger' %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <%= link_to "買い物を続ける", items_path, class: 'btn btn-primary' %>
+    </div>
+    <div class="col-lg-4">
+      <table class="table table-bordered">
+        <tr>
+          <td class="bg-light">合計金額</td><td><%= @sum %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="text-center mt-4">
+  <%# if @cart_items.empty? %>
+  <%# flash[:notice] = "商品をカートに追加してください。" %>
+  <%#= link_to "情報入力に進む", cart_items_path, class: 'btn btn-success' %>
+  <%# else %>
+  <%= link_to "情報入力に進む", orders_new_path, class: 'btn btn-success' %>
+  <%# end %>
+</div>
+

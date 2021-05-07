@@ -1,0 +1,30 @@
+<% if flash[:notice] %>
+  <p class="notice"><font color="green"><%= notice %></font></p>
+<% end %>
+<div class="text-center mt-5">
+  <div>
+    <h5>ようこそ、ながのCAKEへ！<br>
+    このサイトは、ケーキ販売のECサイトになります。<br>
+    会員でない⽅も商品の閲覧はできますが、<br>
+    購⼊には会員登録が必要になります。</h5>
+  </div>
+</div>
+<div class="container mt-5">
+  <h2>新着商品</h2>
+<div class="row">
+  <% @items.each do |item| %>
+    <div class="col-md-3 border border-warning pt-5">
+      <div class="text-center">
+        <%= link_to item_path(item.id) do %><%= attachment_image_tag item, :image, :fill, 100, 100, format: 'jpeg' %><% end %>
+      </div>
+        <div class="card-body">
+          <div class="text-center">
+            <%= item.name %><br>
+          </div>
+            ￥<%= (item.price * 1.1).floor %>
+        </div>
+    </div>
+<% end %>
+</div>
+  <p class="text-right mt-3"><%= link_to "全ての商品を見る>" , items_path %></p>
+</div>

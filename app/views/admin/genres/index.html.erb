@@ -1,0 +1,54 @@
+<div class="container mt-5">
+  <div class="row mt-3">
+    <div class="col-lg-1">
+    </div>
+    <div class="col-lg-11">
+      <span class="px-3 h4 bg-light text-dark">ジャンル⼀覧・追加</span>
+    </div>
+  </div>
+  <div class="ml-3 mt-3">
+    <% if @genre.errors.any? %>
+      <%#= @item.errors.count %>
+      <% @genre.errors.full_messages.each do |message| %>
+       <div>
+        <li><font color="red"><%= message %></font></li>
+       </div>
+      <% end %>
+    <% end %>
+  </div>
+  <%= form_with model: @genre, url:'/admin/genres', local:true do |f| %>
+  <div class="row mt-4">
+    <div class="col-lg-6">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th>ジャンル名</th><td><%= f.text_field :name, :placeholder => "ジャンル名" %></td><td><%= f.submit '新規登録', class: 'btn btn-success' %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6">
+    </div>
+  </div>
+  <% end %>
+
+  <div class="row mt-3">
+    <div class="col-lg-4">
+      <table class="table border-bottom">
+        <tbody>
+          <tr class="bg-light">
+            <th>ジャンル</th><th></th>
+          </tr>
+        <% @genres.each do |genre| %>
+          <tr>
+            <td><%= genre.name %></td>
+            <td><div class="text-right"><%= link_to "編集する", admin_genre_show_edit_path(genre.id), class: 'btn btn-success' %></div></td>
+          </tr>
+        </tbody>
+        <% end %>
+      </table>
+    </div>
+    <div class="col-lg-8">
+    </div>
+  </div>
+</div>
