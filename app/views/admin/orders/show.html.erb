@@ -25,13 +25,14 @@
     </tr>
     <tr>
       <th>注文ステータス</th>
-  <%= form_with model: @order, url: admin_orders_update_path(@order.id), local:true do |f| %>
-      <td><%= f.select :status, Order.statuses.keys.to_a, {} %>
-          <span class="px-4"><%= f.submit '更新', class: 'btn btn-success btn-sm' %></span>
+
+      <td><%= form_with model: @order, url: admin_orders_update_path(@order.id), local:true do |f| %>
+          <%= f.select :status, Order.statuses.keys.to_a, {} %>
+          <span class="px-4"><%= f.submit '更新', class: 'btn btn-success btn-sm' %><% end %></span>
       </td>
     </tr>
   </tbody>
-  <% end %>
+
 </table>
   <div class="row mt-3">
     <div class="col-lg-9">
@@ -41,20 +42,19 @@
           <th class="text-center">単価(税込)</th>
           <th class="text-center">数量</th>
           <th class="text-center">小計</th>
-          <th class="text-center">制作ステータス</th>
-          <th></th>
+          <th class="px-5">制作ステータス</th>
         </tr>
       <% @order_details.each do |order_detail| %>
         <tr>
-          <td class="align-middle"><%= order_detail.item.name %></td>
+          <td class="align-middle" width="170"><%= order_detail.item.name %></td>
           <td class="align-middle text-center" width="120"><%= (order_detail.item.price * 1.1).floor %></td>
-          <td class="align-middle text-center"><%= order_detail.amount %></td>
+          <td class="align-middle text-center" width="70"><%= order_detail.amount %></td>
           <td class="align-middle text-center" width="70"><%= (order_detail.item.price * 1.1).floor * order_detail.amount %></td>
-          <%= form_with model: order_detail, url: admin_order_detail_update_path(order_detail.id), method: :patch, local:true do |f| %>
           <%#= f.select :production_status, OrderedItem.production_statuses.keys, :selected=>OrderedItem.production_statuses[ordered_item.production_status] %>
-          <td class="align-middle text-center" width="150"><%= f.select :making_status, OrderDetail.making_statuses.keys.to_a, {} %></td>
-          <td width="80"><%= f.submit '更新', class: 'btn btn-success' %></td>
-          <% end %>
+          <td class="align-middle text-center" width="200"><%= form_with model: order_detail, url: admin_order_detail_update_path(order_detail.id), method: :patch, local:true do |f| %>
+            <%= f.select :making_status, OrderDetail.making_statuses.keys.to_a, {} %>
+            <span class="px-4"><%= f.submit '更新', class: 'btn btn-success' %><% end %></span>
+          </td>
         </tr>
       <% end %>
       </table>

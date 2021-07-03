@@ -10,15 +10,14 @@ class Admin::OrdersController < ApplicationController
   def update
     @order = Order.new(order_params)
     @order = Order.find(params[:id])
+    @order.update(order_params)
     if params[:order][:status] == "入金確認" then
       @order = Order.find(params[:id])
       @order_details = @order.order_details
       @order_details.update( making_status: "制作待ち")
-      @order.update(order_params)
-      redirect_to admin_orders_show_path(@order.id), status: 301
+      redirect_to admin_orders_show_path(@order.id)
     else
-      @order.update(order_params)
-      redirect_to admin_orders_show_path(@order.id), status: 301
+      redirect_to admin_orders_show_path(@order.id)
     end
   end
 

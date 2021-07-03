@@ -6,18 +6,15 @@ class Admin::OrderDetailsController < ApplicationController
     #@order_detail = params[:order_detail][:making_status]
       @order_detail = OrderDetail.find(params[:id])
       @order = @order_detail.order
-    if params[:order_detail][:making_status] == "制作中" then
-      @order = @order_detail.order
-      @order.update( status: "制作中")
       @order_detail.update(order_detail_params)
-      redirect_to admin_orders_show_path(@order.id), status: 301
+    if params[:order_detail][:making_status] == "制作中" then
+      @order.update( status: "制作中")
+      redirect_to admin_orders_show_path(@order.id)
     elsif @order.order_details.count == @order.order_details.where(making_status: "制作完了").count then
       @order.update( status: "発送済")
-      @order_detail.update(order_detail_params)
-      redirect_to admin_orders_show_path(@order.id), status: 301
+      redirect_to admin_orders_show_path(@order.id)
     else
-      @order_detail.update(order_detail_params)
-      redirect_to admin_orders_show_path(@order.id), status: 301
+      redirect_to admin_orders_show_path(@order.id)
     end
   end
 
